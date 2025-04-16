@@ -861,7 +861,18 @@ Auto Scaling: With Kubernetes Horizontal Pod Autoscaler, you can automatically s
 
 Rolling Update & Rollback: Kubernetes allows rolling updates, which means it will gradually update Pods one by one, ensuring the application remains available throughout the process. If something goes wrong during the update, you can rollback to a previous stable version.
 
+👨‍💻 When to Choose Which Strategy?
+Use RollingUpdate:
 
+For most production workloads where high availability and zero downtime are required.
+
+When you are gradually releasing new versions of your application and want to avoid service disruption.
+
+Use Recreate:
+
+For non-critical applications or during maintenance windows where it's okay to have a temporary outage.
+
+When you need to clear everything and redeploy fresh Pods (e.g., clearing persistent state or major upgrades).
 
 
 
