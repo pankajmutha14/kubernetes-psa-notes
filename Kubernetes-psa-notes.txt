@@ -849,6 +849,18 @@ spec:
     - port: 80
       targetPort: 9090
       nodePort: 30095
+######################################
+✅ Deployment in Kubernetes
+######################################
+A Deployment in Kubernetes is one of the most recommended and used resources for managing Pod lifecycles. It ensures reliable application deployment with features like zero downtime, auto-scaling, rolling updates, and rollback capabilities.
+
+🎯 Key Advantages of Using Deployments
+Zero Downtime: Deployments ensure high availability by using strategies like rolling updates. Even when pods are being updated, the service remains available to users.
+
+Auto Scaling: With Kubernetes Horizontal Pod Autoscaler, you can automatically scale your Pods based on CPU or memory usage (or other custom metrics).
+
+Rolling Update & Rollback: Kubernetes allows rolling updates, which means it will gradually update Pods one by one, ensuring the application remains available throughout the process. If something goes wrong during the update, you can rollback to a previous stable version.
+
 
 
 
