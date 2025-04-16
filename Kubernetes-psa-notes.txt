@@ -753,8 +753,66 @@ Scaling: You can increase or decrease the number of replicas (Pods) easily.
 
 Selector-based matching: RS manages only those Pods that match its label selector.
 
+Example: 
 
-replica-set.yml
+# -------- Manually created Pod with label app: myapp --------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+    - name: myappcontainer
+      image: nginx
+      ports:
+        - containerPort: 80
+
+---
+# -------- Manually created Pod with label app: dempapp --------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dempapp-pod
+  labels:
+    app: dempapp
+spec:
+  containers:
+    - name: dempappcontainer
+      image: nginx
+      ports:
+        - containerPort: 80
+
+---
+# -------- ReplicaSet that manages both app: dempapp and app: myapp --------
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rs-webapp
+spec:
+  replicas: 2
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - dempapp
+          - myapp
+  template:
+    metadata:
+      labels:
+        app: dempapp   # Pods created by RS will have this label
+    spec:
+      containers:
+        - name: webappcontainer
+          image: nginx
+          ports:
+            - containerPort: 80
+-----------------------------------------------------------------------------------------------------
+
+
+replica-set.yml for practicals
 ------------------
 
 ---
