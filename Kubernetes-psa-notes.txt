@@ -741,6 +741,59 @@ kubectl scale rc dempapp --replicas=1  Explain in short
 
 ##############################################
 
+✅ ReplicaSet in Kubernetes
+===================
+🔹 What is a ReplicaSet?
+A ReplicaSet (RS) is a Kubernetes resource that ensures a specified number of identical Pods are running at any given time.
+
+💡 Key Features:
+Self-healing: If a Pod crashes or is manually deleted, the RS will automatically create a new Pod to maintain the desired number.
+
+Scaling: You can increase or decrease the number of replicas (Pods) easily.
+
+Selector-based matching: RS manages only those Pods that match its label selector.
+
+
+replica-set.yml
+------------------
+
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dempapp         # Must match pod template labels
+  template:
+    metadata:
+      labels:
+        app: dempapp
+    spec:
+      containers:
+        - name: webappcontainer
+          image: psait/pankajsiracademy:latest
+          ports:
+            - containerPort: 9090
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webappservice
+spec:
+  type: NodePort
+  selector:
+    app: dempapp           # Must match pod labels
+  ports:
+    - port: 80
+      targetPort: 9090
+      nodePort: 30095
+
+
+
 
 
 ----------------------------------------------------------Further notes will be added soon-----------------------------------------------------
