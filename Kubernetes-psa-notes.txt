@@ -1008,6 +1008,43 @@ targetPort: 9090: Forwards traffic to container's port 9090.
 nodePort: 30095: Opens this port on the Kubernetes node — used to access the service from outside the cluster.
 
 
+################################
+Deployment with load balancer
+###############################
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dempapp         # Must match pod template labels
+  template:
+    metadata:
+      labels:
+        app: dempapp
+    spec:
+      containers:
+        - name: webappcontainer
+          image: psait/pankajsiracademy:latest
+          ports:
+            - containerPort: 9090
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webappservice
+spec:
+  type: LoadBalancer     # ✅ Changed from NodePort to LoadBalancer
+  selector:
+    app: dempapp
+  ports:
+    - port: 80
+      targetPort: 9090
 
 
 ----------------------------------------------------------Further notes will be added soon-----------------------------------------------------
