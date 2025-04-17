@@ -874,6 +874,131 @@ For non-critical applications or during maintenance windows where it's okay to h
 
 When you need to clear everything and redeploy fresh Pods (e.g., clearing persistent state or major upgrades).
 
+############################
+deployment-service.yml
+#########################
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dempapp         # Must match pod template labels
+  template:
+    metadata:
+      labels:
+        app: dempapp
+    spec:
+      containers:
+        - name: webappcontainer
+          image: psait/pankajsiracademy:latest
+          ports:
+            - containerPort: 9090
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webappservice
+spec:
+  type: NodePort
+  selector:
+    app: dempapp           # Must match pod labels
+  ports:
+    - port: 80
+      targetPort: 9090
+      nodePort: 30095
+
+#################################################################################################################
+
+🔧 1. Deployment
+
+apiVersion: apps/v1
+Uses the apps/v1 API to define a Deployment.
+
+
+kind: Deployment
+Declares that this is a Deployment (used to manage pods).
+
+
+metadata:
+  name: webapp
+Assigns the Deployment a name: webapp.
+
+
+spec:
+  replicas: 3
+Tells Kubernetes to run 3 replicas (3 pods) of your app.
+
+  selector:
+    matchLabels:
+      app: dempapp
+The deployment will manage pods that have the label app: dempapp.
+
+
+  template:
+    metadata:
+      labels:
+        app: dempapp
+This is the pod template. Every pod created will be labeled app: dempapp.
+
+This must match the selector above.
+
+    spec:
+      containers:
+        - name: webappcontainer
+          image: psait/pankajsiracademy:latest
+          ports:
+            - containerPort: 9090
+
+This is the container spec inside the pod:
+
+name: webappcontainer
+
+image: Docker image hosted at Docker Hub (psait/pankajsiracademy:latest)
+
+containerPort: The app runs on port 9090 inside the container.
+
+🌐 2. Service
+
+apiVersion: v1
+Uses the core v1 API to define a Service.
+
+
+kind: Service
+Declares a Service (used to expose pods).
+
+
+metadata:
+  name: webappservice
+The service name is webappservice.
+
+
+spec:
+  type: NodePort
+NodePort type: Exposes your app externally by opening a port on every node in the cluster.
+
+Clients can access it via:
+http://<NodeIP>:30095
+
+
+  selector:
+    app: dempapp
+The service targets pods with label app: dempapp — which matches the Deployment.
+
+
+  ports:
+    - port: 80
+      targetPort: 9090
+      nodePort: 30095
+port: 80: The port the service receives traffic on (internally).
+
+targetPort: 9090: Forwards traffic to container's port 9090.
+
+nodePort: 30095: Opens this port on the Kubernetes node — used to access the service from outside the cluster.
+
 
 
 
