@@ -852,6 +852,14 @@ spec:
 ######################################
 ✅ Deployment in Kubernetes
 ######################################
+
+Feature	               ReplicaSet	                  Deployment
+Manages Pods	             ✅ Yes	                    ✅ Yes (via ReplicaSet)
+Rolling Updates	           ❌ No	                    ✅ Yes
+Rollbacks	                 ❌ No	                    ✅ Yes
+YAML Kind	                 ReplicaSet	                Deployment
+Use in Real World	         Rare	                      Very Common
+
 A Deployment in Kubernetes is one of the most recommended and used resources for managing Pod lifecycles. It ensures reliable application deployment with features like zero downtime, auto-scaling, rolling updates, and rollback capabilities.
 
 🎯 Key Advantages of Using Deployments
