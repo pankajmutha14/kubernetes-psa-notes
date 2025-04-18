@@ -1047,5 +1047,58 @@ spec:
       targetPort: 9090
 
 
+Note: 
+
+🧠 First: Is Each Worker Node a Separate VM?
+✅ Yes, each worker node in EKS is an individual EC2 instance (VM).
+
+So, if you have 4 worker nodes, EKS will launch 4 separate EC2 instances in your account (under the hood).
+
+🚀 How to Create More Worker Nodes in EKS?
+There are two ways to create more worker nodes:
+
+✅ Option 1: CLI Method (Add --nodes flag)
+You can specify the number of nodes when creating the cluster using the --nodes flag:
+
+eksctl create cluster \
+  --name psait-cluster4 \
+  --region ap-south-1 \
+  --node-type t2.medium \
+  --zones ap-south-1a,ap-south-1b \
+  --nodes 4 \
+  --nodes-min 2 \
+  --nodes-max 6
+🔍 What This Means:
+--nodes 4 → Start with 4 worker nodes
+
+--nodes-min 2 → Minimum nodes for autoscaling
+
+--nodes-max 6 → Maximum nodes for autoscaling
+
+Nodes will be spread across the AZs you mention (load balanced)
+
+✅ Option 2: YAML Config File (More Flexible)
+Create a cluster.yaml like this:
+
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: psait-cluster4
+  region: ap-south-1
+
+availabilityZones: ["ap-south-1a", "ap-south-1b"]
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t2.medium
+    desiredCapacity: 4
+    minSize: 2
+    maxSize: 6
+    volumeSize: 20
+
+Note: We can use terrform for the same to create EKS setup
+
+
 ----------------------------------------------------------Further notes will be added soon-----------------------------------------------------
 
