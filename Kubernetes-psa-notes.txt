@@ -1139,6 +1139,38 @@ spec:
     targetPort: 9090
 ...
 
+pipeline - k8s + maven + docker + jenkins
+---------------------------------------------
+pipeline {
+    agent any
+    
+    tools{
+        maven "maven-3.9.9"
+    }
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'main', url: 'https://github.com/pankajmutha14/docker-test.git'
+            }
+        }
+        stage('Maven Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Docker Image') {
+            steps {
+                sh 'docker build -t psait/pankajsiracademy:latest .'
+            }
+        }
+        stage('k8s deployment') {
+            steps {
+                sh 'kubectl apply -f k8s-deploy.yml'
+            }
+        }
+    }
+}
 
 ----------------------------------------------------------Further notes will be added soon-----------------------------------------------------
 
