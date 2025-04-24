@@ -1172,5 +1172,40 @@ pipeline {
     }
 }
 
+##############################
+Scaling in Kubernetes
+#############################
+
+1. . HPA - Horizontal Pod Autoscaler
+###########################################
+What it does: Adds or removes pods based on CPU/memory usage, custom metrics, or external metrics.
+
+Use case: When traffic increases, Kubernetes spins up more pods to handle the load.
+
+Controlled by: The HorizontalPodAutoscaler object.
+
+Example: If CPU usage goes above 80%, HPA can increase the pod count from 2 to 5 automatically
+
+ 2. VPA - Vertical Pod Autoscaler
+What it does: Adjusts CPU and memory requests/limits of a pod automatically.
+
+Apply Load in HPA
+--------------
+kubectl run -i --tty load-generator --rm \
+  --image=busybox --restart=Never \
+  -- /bin/sh -c "while true; do wget -q -O- http://hpa-demo-deployment; sleep 0.01; done"
+
+
+
+kubectl get hpa -w
+
+kubectl describe deploy hpa-demo-deployment
+
+kubectl get hpa
+
+kubectl get events
+
+
+
 ----------------------------------------------------------Further notes will be added soon-----------------------------------------------------
 
