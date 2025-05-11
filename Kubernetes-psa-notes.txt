@@ -623,7 +623,7 @@ kubeclt apply -f <yml-file-name>
 kubectl get all -n backend-ns
 
 #get all pods in kube-system
-kubectly get pods -n kube-system
+kubectl get pods -n kube-system
 
 #get all worker nodes
 kubectl get nodes
